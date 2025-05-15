@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P5.js Image Editor</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>P5.js Image Editor</h1>
+        
+        <div class="controls">
+            <label class="file-upload">
+                Upload Image
+                <input type="file" id="imageUpload" accept="image/*">
+            </label>
+            
+            <div class="control-group">
+                <label for="brightnessSlider">Brightness</label>
+                <input type="range" id="brightnessSlider" min="-100" max="100" value="0" disabled>
+            </div>
+            
+            <div class="control-group">
+                <label for="contrastSlider">Contrast</label>
+                <input type="range" id="contrastSlider" min="-100" max="100" value="0" disabled>
+            </div>
+            
+            <button id="grayscaleBtn" class="effect-btn" disabled>Grayscale</button>
+            <button id="invertBtn" class="effect-btn" disabled>Invert Colors</button>
+            <button id="blurBtn" class="effect-btn" disabled>Blur</button>
+            <button id="resetBtn" class="reset-btn" disabled>Reset Image</button>
+            <button id="downloadBtn" class="download-btn" disabled>Download Image</button>
+        </div>
+        
+        <div id="canvasContainer"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
