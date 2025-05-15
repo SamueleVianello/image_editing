@@ -4,7 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>P5.js Image Editor</title>
+    <!-- Load p5.js from CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.min.js"></script>
+    <!-- Additional p5.js components -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/addons/p5.sound.min.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -34,7 +37,9 @@
             <button id="downloadBtn" class="download-btn" disabled>Download Image</button>
         </div>
         
-        <div id="canvasContainer"></div>
+        <div id="canvasContainer">
+            <!-- The p5.js canvas will be created and inserted here by the script -->
+        </div>
     </div>
 
     <script src="script.js"></script>
