@@ -72,9 +72,18 @@ input[type="file"] {
 .file-upload:hover {
     background-color: #0b7dda;
 }
+#canvasContainer {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 10px;
+}
+
 canvas {
     border: 1px solid #ddd;
     max-width: 100%;
+    height: auto;
+    display: block;
 }
 .effect-btn {
     background-color: #555;
