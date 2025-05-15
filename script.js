@@ -6,10 +6,17 @@ let contrast = 0;
 let isGrayscale = false;
 let isInverted = false;
 let isBlurred = false;
+let canvas = null;
 
 function setup() {
-    // Canvas will be created when an image is uploaded
-    noCanvas();
+    // Initial canvas setup - will be properly sized when an image is uploaded
+    canvas = createCanvas(400, 300);
+    canvas.parent('canvasContainer');
+    background(240);
+    textAlign(CENTER, CENTER);
+    fill(100);
+    textSize(16);
+    text("Upload an image to begin editing", width/2, height/2);
     
     // File upload handling
     document.getElementById('imageUpload').addEventListener('change', handleFileUpload);
@@ -33,9 +40,23 @@ function handleFileUpload(event) {
             loadImage(e.target.result, img => {
                 originalImg = img;
                 resetControlValues();
-                createCanvas(img.width, img.height);
-                select('canvas').parent('canvasContainer');
-                image(img, 0, 0);
+                
+                // Make sure we have proper dimensions for the canvas
+                let canvasWidth = img.width;
+                let canvasHeight = img.height;
+                
+                // Create or resize the canvas
+                if (!canvas) {
+                    canvas = createCanvas(canvasWidth, canvasHeight);
+                    canvas.parent('canvasContainer');
+                } else {
+                    resizeCanvas(canvasWidth, canvasHeight);
+                }
+                
+                // Clear the canvas and draw the image
+                clear();
+                image(originalImg, 0, 0);
+                
                 enableControls();
             });
         };
@@ -89,6 +110,8 @@ function toggleBlur() {
 }
 
 function applyFilters() {
+    if (!originalImg) return;
+    
     // Start with a copy of the original image
     let imgCopy = originalImg.get();
     imgCopy.loadPixels();
@@ -133,18 +156,20 @@ function applyFilters() {
     
     // Draw the processed image
     clear();
-    image(imgCopy, 0, 0);
+    image(imgCopy, 0, 0, width, height);
     
     modified = true;
 }
 
 function resetImage() {
+    if (!originalImg) return;
+    
     resetControlValues();
     document.getElementById('grayscaleBtn').style.backgroundColor = '#555';
     document.getElementById('invertBtn').style.backgroundColor = '#555';
     document.getElementById('blurBtn').style.backgroundColor = '#555';
     clear();
-    image(originalImg, 0, 0);
+    image(originalImg, 0, 0, width, height);
     modified = false;
 }
 
