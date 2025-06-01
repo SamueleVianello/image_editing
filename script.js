@@ -4,12 +4,14 @@ let w;
 let shift;
 let curr_shift;
 let scale; // zoom in or out
+let angle; // angle for rotation
 let my_shader;
 let buffer;
 let high_res_buffer;
 
 let mouse_start;
 let mouse_end;
+let =false;
 
 function preload() {
     my_shader = loadShader('shader.vert', 'shader.frag');
@@ -27,6 +29,17 @@ function setup() {
     document.getElementById('resetBtn').addEventListener('click', resetImage);
     document.getElementById('downloadBtn').addEventListener('click', downloadImage);
 
+    document.getElementById('rotationSlider').addEventListener('input', 
+        function () {
+            updateRotation(document.getElementById('rotationSlider').value
+            /document.getElementById('rotationSlider').max*PI)}
+    );
+    document.getElementById('rotationSlider').addEventListener('change', 
+        function () {
+            updateRotation(document.getElementById('rotationSlider').value
+            /document.getElementById('rotationSlider').max*PI)}
+    );
+
     // initialize Parameters
     initializeParameters()
 
@@ -38,27 +51,36 @@ function setup() {
 }
 
 function mousePressed(){
-    mouse_start = createVector(mouseX, mouseY);
+    if (mouseX <= width && mouseX >= 0 && mouseY <= height && mouseY >= 0){
+        mouse_start = createVector(mouseX, mouseY);
+        flag_mouse_in = true;
+    }
+    else{flag_mouse_in = false;}
 }
 
 function mouseDragged(){
-    mouse_end = createVector(mouseX, mouseY);
-    curr_shift = mouse_end.sub(mouse_start);
-    curr_shift.x = curr_shift.x/width;
-    curr_shift.y = curr_shift.y/height;
-    //print(curr_shift)
-    renderScreen()
+    if (flag_mouse_in){
+        mouse_end = createVector(mouseX, mouseY);
+        curr_shift = mouse_end.sub(mouse_start);
+        curr_shift.x = curr_shift.x/width;
+        curr_shift.y = curr_shift.y/height;
+        //print(curr_shift)
+        renderScreen()
+    }
+    
 }
 
 function mouseReleased(){
-    mouse_end = createVector(mouseX, mouseY);
-    curr_shift = mouse_end.sub(mouse_start);
-    curr_shift.x = curr_shift.x/width;
-    curr_shift.y = curr_shift.y/height;
-    // save final shift and delete curr_shift
-    shift = shift.add(curr_shift);
-    curr_shift = createVector(0, 0);
-    renderScreen()
+    if (flag_mouse_in){
+        mouse_end = createVector(mouseX, mouseY);
+        curr_shift = mouse_end.sub(mouse_start);
+        curr_shift.x = curr_shift.x/width;
+        curr_shift.y = curr_shift.y/height;
+        // save final shift and delete curr_shift
+        shift = shift.add(curr_shift);
+        curr_shift = createVector(0, 0);
+        renderScreen()
+    }
 }
 
 function doubleClicked() {
@@ -66,11 +88,18 @@ function doubleClicked() {
     //renderScreen()
 }
 
+// =========================================================
 function initializeParameters(){
     // initialize shifts
     shift = createVector(0, 0);
     curr_shift = createVector(0, 0);
-    scale = 0.70;
+    scale = 1.0;
+    angle = 0;
+}
+
+function updateRotation( ang){
+    angle = ang;
+    renderScreen();
 }
 
 function renderScreen() {
@@ -78,7 +107,7 @@ function renderScreen() {
     my_shader.setUniform('u_resolution', [w, w]);
     my_shader.setUniform('u_shift', [-(shift.x+curr_shift.x), shift.y+curr_shift.y]);
     my_shader.setUniform('u_scale', scale*0.5);
-    my_shader.setUniform('u_rotation', 0);
+    my_shader.setUniform('u_rotation', angle);
     my_shader.setUniform('u_texture', originalImg);
 
     // clear the buffer
