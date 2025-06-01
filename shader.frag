@@ -14,6 +14,7 @@ void main() {
     // Get the pixel coordinates
     vec2 st = gl_FragCoord.xy / u_resolution.xy;
     st*=0.5;
+    
 
     vec2 grid = floor(st * 2.0);
     vec2 cell = fract(st * 2.0);
@@ -24,6 +25,8 @@ void main() {
     if (grid.y > 0.0) {
         cell.y = 1.0 - cell.y; // Mirror vertically for top cells
     }
+
+    cell = mod(cell+u_shift,2.0);
 
     st = cell*u_scale;  
 

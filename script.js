@@ -2,9 +2,14 @@ let originalImg = null;
 let canvas = null;
 let w;
 let shift;
+let curr_shift;
+let scale; // zoom in or out
 let my_shader;
 let buffer;
 let high_res_buffer;
+
+let mouse_start;
+let mouse_end;
 
 function preload() {
     my_shader = loadShader('shader.vert', 'shader.frag');
@@ -22,8 +27,8 @@ function setup() {
     document.getElementById('resetBtn').addEventListener('click', resetImage);
     document.getElementById('downloadBtn').addEventListener('click', downloadImage);
 
-    // initialize shift
-    shift = createVector(0, 0);
+    // initialize Parameters
+    initializeParameters()
 
     // create a buffer canvas   
     buffer = createGraphics(w, w, WEBGL);
@@ -32,13 +37,47 @@ function setup() {
     renderScreen();
 }
 
+function mousePressed(){
+    mouse_start = createVector(mouseX, mouseY);
+}
 
+function mouseDragged(){
+    mouse_end = createVector(mouseX, mouseY);
+    curr_shift = mouse_end.sub(mouse_start);
+    curr_shift.x = curr_shift.x/width;
+    curr_shift.y = curr_shift.y/height;
+    //print(curr_shift)
+    renderScreen()
+}
+
+function mouseReleased(){
+    mouse_end = createVector(mouseX, mouseY);
+    curr_shift = mouse_end.sub(mouse_start);
+    curr_shift.x = curr_shift.x/width;
+    curr_shift.y = curr_shift.y/height;
+    // save final shift and delete curr_shift
+    shift = shift.add(curr_shift);
+    curr_shift = createVector(0, 0);
+    renderScreen()
+}
+
+function doubleClicked() {
+    //shift = createVector(0, 0);
+    //renderScreen()
+}
+
+function initializeParameters(){
+    // initialize shifts
+    shift = createVector(0, 0);
+    curr_shift = createVector(0, 0);
+    scale = 0.70;
+}
 
 function renderScreen() {
     // set shader parameters
     my_shader.setUniform('u_resolution', [w, w]);
-    my_shader.setUniform('u_shift', [shift.x, shift.y]);
-    my_shader.setUniform('u_scale', 0.5);
+    my_shader.setUniform('u_shift', [-(shift.x+curr_shift.x), shift.y+curr_shift.y]);
+    my_shader.setUniform('u_scale', scale*0.5);
     my_shader.setUniform('u_rotation', 0);
     my_shader.setUniform('u_texture', originalImg);
 
@@ -81,7 +120,9 @@ function resetImage() {
     if (!originalImg) return;
     
     clear();
-    image(originalImg, -width/2, -height/2);
+    initializeParameters()
+    renderScreen()
+    //image(originalImg, -width/2, -height/2);
 }
 
 function downloadImage() {
