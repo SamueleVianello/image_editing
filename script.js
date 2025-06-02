@@ -93,7 +93,7 @@ function initializeParameters(){
     // initialize shifts
     shift = createVector(0, 0);
     curr_shift = createVector(0, 0);
-    scale = 1.0;
+    scale = 0.70;
     angle = 0;
 }
 

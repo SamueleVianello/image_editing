@@ -31,20 +31,22 @@ void main() {
         cell.y = 1.0 - cell.y; // Mirror vertically for top cells
     }
 
-    //cell = rotate2d(0.3)*(cell-vec2(0.5))+vec2(0.5);
+    
     cell = rotate2d(u_rotation) * (cell - vec2(0.5)) + vec2(0.5);
 
-    vec2 shift = rotate2d(u_rotation) * u_shift;
-    
-    //cell = mod(cell+shift,2.0);
-    cell = (cell+u_shift);
+    vec2 shift = u_shift;
+    // questo sotto rovina il centro di rotazione 
+    // shift = rotate2d(u_rotation) * u_shift;
 
-    st = cell*u_scale;  
+    cell = (cell+shift);
+    
+
+    st = cell*u_scale ;  
     //st = rotate2d(0.5)*st;
     
 
     // extract the colors from the texture
-    vec4 color = texture2D(u_texture, st);
+    vec4 color = texture2D(u_texture, mod(st,1.0));
     
     // Debug: visualize the coordinates directly
     //color = vec4(st.x, st.y, 0.0, 1.0);

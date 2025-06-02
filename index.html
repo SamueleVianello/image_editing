@@ -8,7 +8,9 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">        
+    <div class="container">
+        <h1>IMAGE VIEWER</h1>
+        
         <div class="controls">
             <label class="file-upload">
                 Upload Image
@@ -17,13 +19,13 @@
             
             <button id="resetBtn" class="reset-btn" disabled>Reset Image</button>
             <button id="downloadBtn" class="download-btn" disabled>Download Image</button>
+            
             <div class="slider-group">
                 <input type="range" min="-100" max="100" value="0" class="slider" id="rotationSlider">
             </div>
         </div>
         
         <div id="canvasContainer">
-            <!-- The p5.js canvas will be created and inserted here by the script -->
             <div id="uploadMessage">Upload an image to begin</div>
         </div>
     </div>
