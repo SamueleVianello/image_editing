@@ -11,7 +11,8 @@ let high_res_buffer;
 
 let mouse_start;
 let mouse_end;
-let =false;
+let flag_mouse_in=false;
+let id_start = 0;
 
 function preload() {
     my_shader = loadShader('shader.vert', 'shader.frag');
@@ -28,7 +29,7 @@ function setup() {
     document.getElementById('imageUpload').addEventListener('change', handleFileUpload);
     document.getElementById('resetBtn').addEventListener('click', resetImage);
     document.getElementById('downloadBtn').addEventListener('click', downloadImage);
-
+    // ROTATION SLIDER
     document.getElementById('rotationSlider').addEventListener('input', 
         function () {
             updateRotation(document.getElementById('rotationSlider').value
@@ -38,6 +39,17 @@ function setup() {
         function () {
             updateRotation(document.getElementById('rotationSlider').value
             /document.getElementById('rotationSlider').max*PI)}
+    );
+    // ZOOM SLIDER
+    document.getElementById('zoomSlider').addEventListener('input', 
+        function () {
+            updateZoom(document.getElementById('zoomSlider').value
+            /document.getElementById('zoomSlider').max *0.75 + 1.0)}
+    );
+    document.getElementById('zoomSlider').addEventListener('change', 
+        function () {
+            updateZoom(document.getElementById('zoomSlider').value
+            /document.getElementById('zoomSlider').max *0.75 + 1.0)}
     );
 
     // initialize Parameters
@@ -54,6 +66,7 @@ function mousePressed(){
     if (mouseX <= width && mouseX >= 0 && mouseY <= height && mouseY >= 0){
         mouse_start = createVector(mouseX, mouseY);
         flag_mouse_in = true;
+        id_start = getIdStart(mouseX,mouseY);
     }
     else{flag_mouse_in = false;}
 }
@@ -64,6 +77,8 @@ function mouseDragged(){
         curr_shift = mouse_end.sub(mouse_start);
         curr_shift.x = curr_shift.x/width;
         curr_shift.y = curr_shift.y/height;
+        curr_shift = correctDirection(curr_shift);
+        curr_shift = curr_shift.rotate(angle);
         //print(curr_shift)
         renderScreen()
     }
@@ -76,6 +91,8 @@ function mouseReleased(){
         curr_shift = mouse_end.sub(mouse_start);
         curr_shift.x = curr_shift.x/width;
         curr_shift.y = curr_shift.y/height;
+        curr_shift = correctDirection(curr_shift);
+        curr_shift = curr_shift.rotate(angle);
         // save final shift and delete curr_shift
         shift = shift.add(curr_shift);
         curr_shift = createVector(0, 0);
@@ -93,13 +110,49 @@ function initializeParameters(){
     // initialize shifts
     shift = createVector(0, 0);
     curr_shift = createVector(0, 0);
-    scale = 0.70;
+    scale = 1.0;
     angle = 0;
 }
 
 function updateRotation( ang){
     angle = ang;
     renderScreen();
+}
+
+function updateZoom(zm){
+    scale = 1.0/zm;
+    renderScreen();
+}
+
+function getIdStart(x,y){
+    // 1 | 2
+    //-------
+    // 4 | 3
+    if(x<width/2){
+        if(y<height/2) return 1;
+        else return 4;
+    }
+    else {
+        if(y<height/2) return 2;
+        else return 3;
+    }
+}
+
+function correctDirection(s, i=id_start){
+    // 1 | 2
+    //-------
+    // 4 | 3
+    if (i==1) {
+        s.y = -s.y; 
+    }
+    if (i==2) {
+        s.x=-s.x;
+        s.y=-s.y;
+    }
+    if (i==3) {
+        s.x=-s.x;
+    }
+    return s;
 }
 
 function renderScreen() {

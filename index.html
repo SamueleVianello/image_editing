@@ -9,7 +9,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>IMAGE VIEWER</h1>
+        <h1>IMAGE MIRROR</h1>
         
         <div class="controls">
             <label class="file-upload">
@@ -19,10 +19,12 @@
             
             <button id="resetBtn" class="reset-btn" disabled>Reset Image</button>
             <button id="downloadBtn" class="download-btn" disabled>Download Image</button>
-            
-            <div class="slider-group">
-                <input type="range" min="-100" max="100" value="0" class="slider" id="rotationSlider">
-            </div>
+        </div>
+        <div class="slider-group">
+            <input type="range" min="-100" max="100" value="0" class="slider" id="rotationSlider">
+        </div>
+        <div class="zoom-slider-group">
+            <input type="range" min="-100" max="100" value="0" class="slider" id="zoomSlider">
         </div>
         
         <div id="canvasContainer">

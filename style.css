@@ -14,7 +14,7 @@ body {
     background-size: 400% 400%;
     animation: gradientShift 8s ease infinite;
     min-height: 100vh;
-    padding: 20px;
+    padding: 10px;
 }
 
 @keyframes gradientShift {
@@ -29,7 +29,7 @@ body {
     background: #ffffff;
     /*border: 8px solid #000000;
     box-shadow: 16px 16px 0px #000000;*/
-    padding: 10px;
+    padding: 5px;
     position: relative;
 }
 
@@ -46,7 +46,7 @@ body {
 }
 
 h1 {
-    font-size: 2.5rem;
+    font-size: 2.0rem;
     font-weight: 900;
     text-transform: uppercase;
     letter-spacing: -2px;
@@ -60,8 +60,8 @@ h1 {
 .controls {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
-    margin-bottom: 12px;
+    gap: 10px;
+    margin-bottom: 8px;
     justify-content: center;
     align-items: center;
 }
@@ -73,7 +73,7 @@ button, .file-upload {
     padding: 8px 8px;
     font-family: 'Space Grotesk', monospace;
     font-weight: 700;
-    font-size: 16px;
+    font-size: 12px;
     text-transform: uppercase;
     letter-spacing: 1px;
     cursor: pointer;
@@ -140,19 +140,49 @@ input[type="file"] {
     border: 4px solid #000000;
     padding: 10px;
     box-shadow: 8px 8px 0px #7928ca;
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+    margin-bottom: 10px;
 }
 
 .slider-group::before {
     content: 'ROTATE';
     position: absolute;
-    top: -8px;
+    top: -18px;
     left: 20px;
     background: #000000;
     color: #ffffff;
     padding: 4px 6px;
     font-size: 12px;
     font-weight: 900;
-    letter-spacing: 2px;
+    letter-spacing: 1px;
+}
+
+.zoom-slider-group {
+    width: 66%;
+    position: relative;
+    background: #ffffff;
+    border: 4px solid #000000;
+    padding: 10px;
+    box-shadow: 8px 8px 0px #7928ca;
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+    margin-bottom: 10px;
+}
+
+.zoom-slider-group::before {
+    content: 'ZOOM';
+    position: absolute;
+    top: -18px;
+    left: 20px;
+    background: #000000;
+    color: #ffffff;
+    padding: 4px 6px;
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 1px;
 }
 
 .slider {
@@ -168,8 +198,8 @@ input[type="file"] {
 .slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 25px;
-    height: 25px;
+    width: 20px;
+    height: 20px;
     background: #7928ca;
     cursor: pointer;
     border: 3px solid #000000;
@@ -177,8 +207,8 @@ input[type="file"] {
 }
 
 .slider::-moz-range-thumb {
-    width: 25px;
-    height: 25px;
+    width: 20px;
+    height: 20px;
     background: #7928ca;
     cursor: pointer;
     border: 3px solid #000000;
@@ -236,7 +266,7 @@ canvas {
     text-align: center;
     pointer-events: none;
     text-transform: uppercase;
-    letter-spacing: 2px;
+    letter-spacing: 1px;
     /*text-shadow: 3px 3px 0px #ffa500;*/
     background: #ffffff;
     padding: 20px 40px;
